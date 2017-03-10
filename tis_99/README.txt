@@ -1,5 +1,5 @@
 load.txt tells TIS-100 what program to load. 
-TIS-100 autosaves when you hit escape, so change load.txt and restart the program to make a different program.
+TIS-99 autosaves when you hit escape, so change load.txt and restart the program to make a different program.
 
 
 Commands:
