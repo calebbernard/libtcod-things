@@ -25,8 +25,7 @@ def genRhythm():
     for m in range(groups):
         for n in range(beats):
             rhythm.append(group[n])
-    print rhythm
-    return rhythm
+    return [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
 
 def genColors(num):
@@ -46,15 +45,34 @@ def genBg():
     except:
         numBars = random.randint(1,10)
         genColors(numBars)
+    print rhythm[beatCount]
     if rhythm[beatCount] == 1:
         numBars = random.randint(1,10)
         genColors(numBars)
+    else:
+        for color in colors:
+            v = .8
+            if color.r > 64:
+                r_mul = .95
+            else:
+                r_mul = 1.25
+            if color.g > 50:
+                g_mul = .95
+            else:
+                g_mul = 1.25
+            if color.b > 50:
+                b_mul = .95
+            else:
+                b_mul = 1.25
+            color.r = max(0, min(int(color.r * r_mul), 255))
+            color.g = max(0, min(int(color.g * g_mul), 255))
+            color.b = max(0, min(int(color.b * b_mul), 255))
     beatCount += 1
-    beatCount %= 12
+    beatCount %= len(rhythm)
 
 def main(key, mouse, timer):
     global colors, numBars
-    everyTime(timer, .2, genBg)
+    everyTime(timer, .05, genBg)
 
     for x in range(numBars):
         paintBg(Coord((size_x / numBars) * x, 0), Coord((size_x / numBars) * (x + 1), size_y), colors[x])
