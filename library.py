@@ -23,6 +23,13 @@ def paintBg(top_left, bot_right, color):
         for y in range(top_left.y, bot_right.y):
             setBg(x, y, color)
 
+def putString(x, y, string, color):
+    libtcod.console_set_default_foreground(0, color)
+    libtcod.console_print_ex(0, x, y, libtcod.BKGND_NONE, libtcod.LEFT, string)
+
+def putChar(x, y, char, color):
+    libtcod.console_set_default_foreground(0, color)
+    libtcod.console_put_char(0, x, y, char, libtcod.BKGND_NONE)
 
 def mouseHover(highlight, newColor, mouse):
     if not highlight:
@@ -64,12 +71,37 @@ def coreLoop(key, mouse, function, size_x, size_y):
             return 0
         libtcod.console_flush()
 
-class Box:
-    def __init__(self, topLeft, botRight, borderStyle, borderColor, bgStyle, bgColor, bgBorder):
-        self.topLeft = topLeft
-        self.botRight = botRight
+def everyTime(timer, time, function):
+    global lastSeconds
+    try:
+        lastSeconds
+    except:
+        lastSeconds = 0
+    if lastSeconds + time < timer:
+        lastSeconds = timer
+        function()
+'''
+
+class boxBorder:
+    def __init__(self, borderStyle, borderColor):
         self.borderStyle = borderStyle
         self.borderColor = borderColor
+        self.calcTiles()
+
+    def calcTiles(self):
+        if self.borderStyle == "Single":
+            self.tiles = {"horizontal": 196, "vertical": 179, "topRight": 191, "topLeft": 218, "bottomRight": 217, "bottomLeft": 192}
+        elif self.borderStyle == "Double":
+            self.tiles = {"horizontal": 205, "vertical": 186, "topRight": 187, "topLeft": 201, "bottomRight": 188, "bottomLeft": 200}
+        else:
+            self.tiles = {"horizontal": ' ', "vertical": ' ', "topRight": ' ', "topLeft": ' ', "bottomRight": ' ', "bottomLeft": ' '}
+
+class Box:
+    def __init__(self, topLeft, botRight, border, bgStyle, bgColor, bgBorder):
+        self.topLeft = topLeft
+        self.botRight = botRight
+        self.border = border
+        self.bgStyle = bgStyle
         self.bgColor = bgColor
         self.bgBorder = bgBorder
 
@@ -89,6 +121,4 @@ class Box:
             botRight.x -= 1
             botRight.y -= 1
         paintBg(topLeft, botRight, self.bgColor)
-
-    def border(self):
-        
+'''
