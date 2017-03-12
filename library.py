@@ -60,16 +60,20 @@ class Coord:
         self.x = x
         self.y = y
 
+def flushScreen():
+    libtcod.console_flush()
+
 def coreLoop(key, mouse, function, size_x, size_y):
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
-        paintBg(Coord(0,0), Coord(size_x, size_y), color(170,40,40))
+        paintBg(Coord(0,0), Coord(size_x, size_y), color(0,0,0))
         timer = getElapsedSeconds()
-        function(key, mouse, timer)
+        if function(key, mouse, timer):
+            return 0
         mouseHover(True, color(25,25,25), mouse)
         if key.vk == libtcod.KEY_ESCAPE:
             return 0
-        libtcod.console_flush()
+        flushScreen()
 
 def everyTime(timer, time, function):
     global lastSeconds
@@ -79,7 +83,7 @@ def everyTime(timer, time, function):
         lastSeconds = 0
     if lastSeconds + time < timer:
         lastSeconds = timer
-        function()
+        return function()
 '''
 
 class boxBorder:
